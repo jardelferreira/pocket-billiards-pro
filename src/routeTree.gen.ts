@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as JogadoresRouteImport } from './routes/jogadores'
+import { Route as NovaPartidaRouteImport } from './routes/nova-partida'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -22,31 +23,40 @@ const JogadoresRoute = JogadoresRouteImport.update({
   path: '/jogadores',
   getParentRoute: () => rootRouteImport,
 } as any)
+const NovaPartidaRoute = NovaPartidaRouteImport.update({
+  id: '/nova-partida',
+  path: '/nova-partida',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/jogadores': typeof JogadoresRoute
+  '/nova-partida': typeof NovaPartidaRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/jogadores': typeof JogadoresRoute
+  '/nova-partida': typeof NovaPartidaRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/jogadores': typeof JogadoresRoute
+  '/nova-partida': typeof NovaPartidaRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/jogadores'
+  fullPaths: '/' | '/jogadores' | '/nova-partida'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/jogadores'
-  id: '__root__' | '/' | '/jogadores'
+  to: '/' | '/jogadores' | '/nova-partida'
+  id: '__root__' | '/' | '/jogadores' | '/nova-partida'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   JogadoresRoute: typeof JogadoresRoute
+  NovaPartidaRoute: typeof NovaPartidaRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -65,12 +75,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof JogadoresRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/nova-partida': {
+      id: '/nova-partida'
+      path: '/nova-partida'
+      fullPath: '/nova-partida'
+      preLoaderRoute: typeof NovaPartidaRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   JogadoresRoute: JogadoresRoute,
+  NovaPartidaRoute: NovaPartidaRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
