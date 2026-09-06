@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as ConfiguracoesRouteImport } from './routes/configuracoes'
 import { Route as HistoricoRouteImport } from './routes/historico'
 import { Route as JogadoresRouteImport } from './routes/jogadores'
 import { Route as NovaPartidaRouteImport } from './routes/nova-partida'
@@ -20,6 +21,11 @@ import { Route as PartidaIdRouteImport } from './routes/partida.$id'
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ConfiguracoesRoute = ConfiguracoesRouteImport.update({
+  id: '/configuracoes',
+  path: '/configuracoes',
   getParentRoute: () => rootRouteImport,
 } as any)
 const HistoricoRoute = HistoricoRouteImport.update({
@@ -55,6 +61,7 @@ const PartidaIdRoute = PartidaIdRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/configuracoes': typeof ConfiguracoesRoute
   '/historico': typeof HistoricoRouteWithChildren
   '/jogadores': typeof JogadoresRoute
   '/nova-partida': typeof NovaPartidaRoute
@@ -64,6 +71,7 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/configuracoes': typeof ConfiguracoesRoute
   '/historico': typeof HistoricoRouteWithChildren
   '/jogadores': typeof JogadoresRoute
   '/nova-partida': typeof NovaPartidaRoute
@@ -74,6 +82,7 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/configuracoes': typeof ConfiguracoesRoute
   '/historico': typeof HistoricoRouteWithChildren
   '/jogadores': typeof JogadoresRoute
   '/nova-partida': typeof NovaPartidaRoute
@@ -85,6 +94,7 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/configuracoes'
     | '/historico'
     | '/jogadores'
     | '/nova-partida'
@@ -94,6 +104,7 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/configuracoes'
     | '/historico'
     | '/jogadores'
     | '/nova-partida'
@@ -103,6 +114,7 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
+    | '/configuracoes'
     | '/historico'
     | '/jogadores'
     | '/nova-partida'
@@ -113,6 +125,7 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  ConfiguracoesRoute: typeof ConfiguracoesRoute
   HistoricoRoute: typeof HistoricoRouteWithChildren
   JogadoresRoute: typeof JogadoresRoute
   NovaPartidaRoute: typeof NovaPartidaRoute
@@ -127,6 +140,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/configuracoes': {
+      id: '/configuracoes'
+      path: '/configuracoes'
+      fullPath: '/configuracoes'
+      preLoaderRoute: typeof ConfiguracoesRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/historico': {
@@ -188,6 +208,7 @@ const HistoricoRouteWithChildren = HistoricoRoute._addFileChildren(
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  ConfiguracoesRoute: ConfiguracoesRoute,
   HistoricoRoute: HistoricoRouteWithChildren,
   JogadoresRoute: JogadoresRoute,
   NovaPartidaRoute: NovaPartidaRoute,
