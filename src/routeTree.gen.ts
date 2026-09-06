@@ -13,6 +13,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as HistoricoRouteImport } from './routes/historico'
 import { Route as JogadoresRouteImport } from './routes/jogadores'
 import { Route as NovaPartidaRouteImport } from './routes/nova-partida'
+import { Route as RankingRouteImport } from './routes/ranking'
 import { Route as HistoricoIdRouteImport } from './routes/historico.$id'
 import { Route as PartidaIdRouteImport } from './routes/partida.$id'
 
@@ -36,6 +37,11 @@ const NovaPartidaRoute = NovaPartidaRouteImport.update({
   path: '/nova-partida',
   getParentRoute: () => rootRouteImport,
 } as any)
+const RankingRoute = RankingRouteImport.update({
+  id: '/ranking',
+  path: '/ranking',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const HistoricoIdRoute = HistoricoIdRouteImport.update({
   id: '/$id',
   path: '/$id',
@@ -52,6 +58,7 @@ export interface FileRoutesByFullPath {
   '/historico': typeof HistoricoRouteWithChildren
   '/jogadores': typeof JogadoresRoute
   '/nova-partida': typeof NovaPartidaRoute
+  '/ranking': typeof RankingRoute
   '/historico/$id': typeof HistoricoIdRoute
   '/partida/$id': typeof PartidaIdRoute
 }
@@ -60,6 +67,7 @@ export interface FileRoutesByTo {
   '/historico': typeof HistoricoRouteWithChildren
   '/jogadores': typeof JogadoresRoute
   '/nova-partida': typeof NovaPartidaRoute
+  '/ranking': typeof RankingRoute
   '/historico/$id': typeof HistoricoIdRoute
   '/partida/$id': typeof PartidaIdRoute
 }
@@ -69,6 +77,7 @@ export interface FileRoutesById {
   '/historico': typeof HistoricoRouteWithChildren
   '/jogadores': typeof JogadoresRoute
   '/nova-partida': typeof NovaPartidaRoute
+  '/ranking': typeof RankingRoute
   '/historico/$id': typeof HistoricoIdRoute
   '/partida/$id': typeof PartidaIdRoute
 }
@@ -79,6 +88,7 @@ export interface FileRouteTypes {
     | '/historico'
     | '/jogadores'
     | '/nova-partida'
+    | '/ranking'
     | '/historico/$id'
     | '/partida/$id'
   fileRoutesByTo: FileRoutesByTo
@@ -87,6 +97,7 @@ export interface FileRouteTypes {
     | '/historico'
     | '/jogadores'
     | '/nova-partida'
+    | '/ranking'
     | '/historico/$id'
     | '/partida/$id'
   id:
@@ -95,6 +106,7 @@ export interface FileRouteTypes {
     | '/historico'
     | '/jogadores'
     | '/nova-partida'
+    | '/ranking'
     | '/historico/$id'
     | '/partida/$id'
   fileRoutesById: FileRoutesById
@@ -104,6 +116,7 @@ export interface RootRouteChildren {
   HistoricoRoute: typeof HistoricoRouteWithChildren
   JogadoresRoute: typeof JogadoresRoute
   NovaPartidaRoute: typeof NovaPartidaRoute
+  RankingRoute: typeof RankingRoute
   PartidaIdRoute: typeof PartidaIdRoute
 }
 
@@ -135,6 +148,13 @@ declare module '@tanstack/react-router' {
       path: '/nova-partida'
       fullPath: '/nova-partida'
       preLoaderRoute: typeof NovaPartidaRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/ranking': {
+      id: '/ranking'
+      path: '/ranking'
+      fullPath: '/ranking'
+      preLoaderRoute: typeof RankingRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/historico/$id': {
@@ -171,6 +191,7 @@ const rootRouteChildren: RootRouteChildren = {
   HistoricoRoute: HistoricoRouteWithChildren,
   JogadoresRoute: JogadoresRoute,
   NovaPartidaRoute: NovaPartidaRoute,
+  RankingRoute: RankingRoute,
   PartidaIdRoute: PartidaIdRoute,
 }
 export const routeTree = rootRouteImport
