@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as JogadoresRouteImport } from './routes/jogadores'
 import { Route as NovaPartidaRouteImport } from './routes/nova-partida'
+import { Route as PartidaIdRouteImport } from './routes/partida.$id'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -28,35 +29,44 @@ const NovaPartidaRoute = NovaPartidaRouteImport.update({
   path: '/nova-partida',
   getParentRoute: () => rootRouteImport,
 } as any)
+const PartidaIdRoute = PartidaIdRouteImport.update({
+  id: '/partida/$id',
+  path: '/partida/$id',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/jogadores': typeof JogadoresRoute
   '/nova-partida': typeof NovaPartidaRoute
+  '/partida/$id': typeof PartidaIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/jogadores': typeof JogadoresRoute
   '/nova-partida': typeof NovaPartidaRoute
+  '/partida/$id': typeof PartidaIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/jogadores': typeof JogadoresRoute
   '/nova-partida': typeof NovaPartidaRoute
+  '/partida/$id': typeof PartidaIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/jogadores' | '/nova-partida'
+  fullPaths: '/' | '/jogadores' | '/nova-partida' | '/partida/$id'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/jogadores' | '/nova-partida'
-  id: '__root__' | '/' | '/jogadores' | '/nova-partida'
+  to: '/' | '/jogadores' | '/nova-partida' | '/partida/$id'
+  id: '__root__' | '/' | '/jogadores' | '/nova-partida' | '/partida/$id'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   JogadoresRoute: typeof JogadoresRoute
   NovaPartidaRoute: typeof NovaPartidaRoute
+  PartidaIdRoute: typeof PartidaIdRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -82,6 +92,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof NovaPartidaRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/partida/$id': {
+      id: '/partida/$id'
+      path: '/partida/$id'
+      fullPath: '/partida/$id'
+      preLoaderRoute: typeof PartidaIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -89,6 +106,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   JogadoresRoute: JogadoresRoute,
   NovaPartidaRoute: NovaPartidaRoute,
+  PartidaIdRoute: PartidaIdRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
