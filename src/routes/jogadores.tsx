@@ -55,9 +55,13 @@ function PlayersPage() {
   async function add() {
     const trimmed = name.trim();
     if (!trimmed) return;
-    await createPlayer(trimmed);
-    setName("");
-    await refresh();
+    try {
+      await createPlayer(trimmed);
+      setName("");
+      await refresh();
+    } catch (err) {
+      console.error("add player failed", err);
+    }
   }
 
   return (
