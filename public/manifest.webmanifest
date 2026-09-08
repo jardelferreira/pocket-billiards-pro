@@ -1,0 +1,23 @@
+{
+  "name": "Sinuca — Marcador por Pontos",
+  "short_name": "Sinuca",
+  "description": "Marcador de sinuca por pontos das bolas 1 a 15, individual ou em duplas. Funciona offline.",
+  "id": "/",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#14261f",
+  "theme_color": "#14261f",
+  "lang": "pt-BR",
+  "icons": [
+    { "src": "/icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "/icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    {
+      "src": "/icons/icon-maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

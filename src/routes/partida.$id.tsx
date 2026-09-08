@@ -21,6 +21,7 @@ import {
   DEFAULT_SETTINGS,
   type AppSettings,
 } from "@/lib/data/repository";
+import { formatDate, formatDuration } from "./historico";
 import {
   ALL_BALLS,
   clearPending,
@@ -67,6 +68,9 @@ function MatchPage() {
   const navigate = useNavigate();
 
   const [state, setState] = useState<GameState | null>(null);
+  const [times, setTimes] = useState<{ startedAt: number; finishedAt?: number | undefined }>({
+    startedAt: Date.now(),
+  });
   const [settings, setSettings] = useState<AppSettings>(DEFAULT_SETTINGS);
   const [loading, setLoading] = useState(true);
   const [floats, setFloats] = useState<FloatScore[]>([]);
@@ -79,6 +83,7 @@ function MatchPage() {
       const [match, s] = await Promise.all([getMatch(id), loadSettings()]);
       setSettings(s);
       setState(match?.state ?? null);
+      if (match) setTimes({ startedAt: match.startedAt, finishedAt: match.finishedAt });
       setLoading(false);
     })();
   }, [hydrated, id]);
@@ -93,6 +98,10 @@ function MatchPage() {
         setTimeout(() => setFloats((f) => f.filter((x) => x.key !== key)), 1000);
       }
       await saveMatchProgress(id, result.state, result.events, result.turn);
+      if (result.state.finished) {
+        const saved = await getMatch(id);
+        if (saved) setTimes({ startedAt: saved.startedAt, finishedAt: saved.finishedAt });
+      }
     },
     [id, settings.animations, state],
   );
@@ -107,7 +116,7 @@ function MatchPage() {
   }
 
   if (state.finished) {
-    return <Result state={state} />;
+    return <Result state={state} times={times} />;
   }
 
   const current = getPlayer(state, state.currentPlayerId)!;
@@ -438,7 +447,13 @@ function FoulDialog({
   );
 }
 
-function Result({ state }: { state: GameState }) {
+function Result({
+  state,
+  times,
+}: {
+  state: GameState;
+  times: { startedAt: number; finishedAt?: number | undefined };
+}) {
   const winnerLabel =
     state.mode === "duplas"
       ? `${teamName(state, state.winnerTeamIndex ?? 0)} venceram!`
@@ -455,6 +470,9 @@ function Result({ state }: { state: GameState }) {
         <h1 className="mt-3 text-3xl text-primary">{winnerLabel}</h1>
         <p className="scoreboard-digits text-6xl text-primary">{winnerScore}</p>
         <p className="text-xs text-muted-foreground">pontos · {MODE_NAME}</p>
+        <p className="mt-1 text-xs text-muted-foreground">
+          {formatDate(times.startedAt)} · duração {formatDuration(times.startedAt, times.finishedAt)}
+        </p>
 
         <ul className="mt-5 space-y-2 text-left">
           {state.players.map((p) => (
