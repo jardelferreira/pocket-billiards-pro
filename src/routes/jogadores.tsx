@@ -62,23 +62,23 @@ function PlayersPage() {
 
   return (
     <AppShell title="Jogadores" subtitle={`${players.length} cadastrados`}>
-      <form
-        className="flex gap-2"
-        onSubmit={(e) => {
-          e.preventDefault();
-          void add();
-        }}
-      >
+      <div className="flex gap-2">
         <Input
           value={name}
           onChange={(e) => setName(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") {
+              e.preventDefault();
+              void add();
+            }
+          }}
           placeholder="Nome do jogador"
           className="h-12 text-base"
         />
-        <Button type="submit" size="lg" className="h-12 px-4">
+        <Button type="button" size="lg" className="h-12 px-4" aria-label="Adicionar jogador" onClick={() => void add()}>
           <Plus className="h-5 w-5" />
         </Button>
-      </form>
+      </div>
 
       <ul className="mt-4 space-y-2">
         {stats.map((s) => (

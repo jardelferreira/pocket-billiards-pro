@@ -31,8 +31,8 @@ export interface GameState {
   pending: number[];
   turnCount: number;
   finished: boolean;
-  winnerPlayerId?: string;
-  winnerTeamIndex?: number;
+  winnerPlayerId?: string | undefined;
+  winnerTeamIndex?: number | undefined;
 }
 
 export interface TurnRecord {
@@ -41,7 +41,7 @@ export interface TurnRecord {
   kind: "pot" | "miss" | "foul";
   balls: number[];
   points: number;
-  beneficiaryId?: string;
+  beneficiaryId?: string | undefined;
 }
 
 export interface GameEvent {
@@ -55,14 +55,14 @@ export interface GameEvent {
     | "foul_ball_value"
     | "turn_changed"
     | "match_finished";
-  payload?: Record<string, unknown>;
+  payload?: Record<string, unknown> | undefined;
 }
 
 export interface EngineResult {
   state: GameState;
-  turn?: TurnRecord;
+  turn?: TurnRecord | undefined;
   events: GameEvent[];
-  gained?: { playerId: string; points: number };
+  gained?: { playerId: string; points: number } | undefined;
 }
 
 export function targetFor(mode: MatchMode, playerCount: number): number {
@@ -82,8 +82,10 @@ export function buildOrder(
   const b = players.filter((p) => p.teamIndex === 1).map((p) => p.id);
   const out: string[] = [];
   for (let i = 0; i < Math.max(a.length, b.length); i++) {
-    if (a[i]) out.push(a[i]);
-    if (b[i]) out.push(b[i]);
+    const ai = a[i];
+    const bi = b[i];
+    if (ai) out.push(ai);
+    if (bi) out.push(bi);
   }
   return out;
 }
@@ -106,7 +108,7 @@ export function createState(
     target: targetFor(mode, players.length),
     players,
     order,
-    currentPlayerId: order[0],
+    currentPlayerId: order[0]!,
     availableBalls: [...ALL_BALLS],
     pending: [],
     turnCount: 0,
@@ -160,7 +162,7 @@ function advanceTurn(state: GameState, toPlayerId?: string): GameEvent {
     state.currentPlayerId = toPlayerId;
   } else {
     const i = state.order.indexOf(state.currentPlayerId);
-    state.currentPlayerId = state.order[(i + 1) % state.order.length];
+    state.currentPlayerId = state.order[(i + 1) % state.order.length]!;
   }
   return { type: "turn_changed", payload: { from, to: state.currentPlayerId } };
 }
@@ -271,7 +273,7 @@ export function registerMiss(state: GameState): EngineResult {
 
 export interface FoulInput {
   penalty: "points" | "ball";
-  ball?: number;
+  ball?: number | undefined;
   beneficiaryId: string;
 }
 
@@ -282,7 +284,7 @@ export function defaultBeneficiary(state: GameState): string {
     return other?.id ?? state.currentPlayerId;
   }
   const i = state.order.indexOf(state.currentPlayerId);
-  return state.order[(i + 1) % state.order.length];
+  return state.order[(i + 1) % state.order.length]!;
 }
 
 export function foulPoints(input: FoulInput): number {

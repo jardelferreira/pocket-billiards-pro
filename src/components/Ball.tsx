@@ -21,7 +21,7 @@ export interface BallProps {
   selected?: boolean;
   dimmed?: boolean;
   potting?: boolean;
-  onClick?: () => void;
+  onClick?: (() => void) | undefined;
   disabled?: boolean;
   label?: string;
 }

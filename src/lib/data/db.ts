@@ -22,12 +22,12 @@ export interface MatchRow {
   modeName: string;
   target: number;
   startedAt: number;
-  finishedAt?: number;
+  finishedAt?: number | undefined;
   status: "running" | "finished";
   playerIds: string[];
-  teamIds?: string[];
-  winnerPlayerId?: string;
-  winnerTeamIndex?: number;
+  teamIds?: string[] | undefined;
+  winnerPlayerId?: string | undefined;
+  winnerTeamIndex?: number | undefined;
   state: GameState;
 }
 
@@ -37,12 +37,12 @@ export interface MatchPlayerRow {
   playerId: string;
   name: string;
   teamIndex: number;
-  teamId?: string;
+  teamId?: string | undefined;
   score: number;
   balls: number;
   fouls: number;
   isWinner: boolean;
-  finishedAt?: number;
+  finishedAt?: number | undefined;
 }
 
 export interface MatchTurnRow {
@@ -53,7 +53,7 @@ export interface MatchTurnRow {
   kind: "pot" | "miss" | "foul";
   balls: number[];
   points: number;
-  beneficiaryId?: string;
+  beneficiaryId?: string | undefined;
   at: number;
 }
 
@@ -61,7 +61,7 @@ export interface MatchEventRow {
   id?: number;
   matchId: string;
   type: string;
-  payload?: Record<string, unknown>;
+  payload?: Record<string, unknown> | undefined;
   at: number;
 }
 
