@@ -23,7 +23,7 @@ export function AppShell({
     <div className="felt-surface min-h-screen pb-24">
       <header className="wood-frame sticky top-0 z-20 px-4 py-3 shadow-(--shadow-table)">
         <h1 className="text-2xl leading-none text-foreground drop-shadow-sm">{title}</h1>
-        {subtitle && <p className="mt-1 text-xs text-foreground/80">{subtitle}</p>}
+        {subtitle && <p className="mt-1 text-xs text-white drop-shadow-sm">{subtitle}</p>}
       </header>
       <main className="mx-auto w-full max-w-lg px-4 py-5">{children}</main>
       <nav className="fixed bottom-0 left-0 right-0 z-30 border-t border-border bg-card/95 backdrop-blur">
